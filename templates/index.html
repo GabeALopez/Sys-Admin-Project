@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Monitor Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>System Monitor</h1>
+    <canvas id="sysChart"></canvas>
+    
+    <script>
+        async function fetchData() {
+            const response = await fetch("/data");
+            const data = await response.json();
+            return [data.cpu, data.memory, data.disk];
+        }
+
+        async function updateChart(chart) {
+            const data = await fetchData();
+            chart.data.datasets[0].data = data;
+            chart.update();
+        }
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            const ctx = document.getElementById("sysChart").getContext("2d");
+            const chart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: ["CPU", "Memory", "Disk"],
+                    datasets: [{
+                        label: "Usage (%)",
+                        backgroundColor: ["red", "blue", "green"],
+                        data: [0, 0, 0],
+                    }]
+                }
+            });
+
+            setInterval(() => updateChart(chart), 5000);
+        });
+    </script>
+</body>
+</html>
