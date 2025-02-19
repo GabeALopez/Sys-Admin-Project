@@ -17,7 +17,7 @@ def collect_system_stats():
     boot_time = psutil.boot_time()
     uptime = time.time() - boot_time
 
-    # TODO: Replace print statments with statements to send data to server
+    # TODO: Replace print statements with statements to send data to server
 
     print(f"CPU Usage: {cpu_usage}%")
     print(f"Memory Usage: {memory_usage}%")
