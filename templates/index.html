@@ -7,19 +7,30 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <h1>System Monitor</h1>
+    <h1>System Monitor Dashboard</h1>
+
     <canvas id="sysChart"></canvas>
-    
+
     <script>
         async function fetchData() {
             const response = await fetch("/data");
-            const data = await response.json();
-            return [data.cpu, data.memory, data.disk];
+            return await response.json();
         }
 
         async function updateChart(chart) {
             const data = await fetchData();
-            chart.data.datasets[0].data = data;
+            chart.data.datasets.forEach((dataset, i) => {
+                const deviceKey = Object.keys(data)[i];  // device1, device2, etc.
+                const deviceData = data[deviceKey];
+
+                if (deviceData && Object.keys(deviceData).length > 0) {
+                    dataset.data = [
+                        deviceData.cpu, deviceData.memory, 
+                        deviceData.disk, deviceData.bytes_sent / 1e6, 
+                        deviceData.bytes_recv / 1e6, deviceData.uptime / 3600
+                    ];
+                }
+            });
             chart.update();
         }
 
@@ -28,12 +39,12 @@
             const chart = new Chart(ctx, {
                 type: "bar",
                 data: {
-                    labels: ["CPU", "Memory", "Disk"],
-                    datasets: [{
-                        label: "Usage (%)",
-                        backgroundColor: ["red", "blue", "green"],
-                        data: [0, 0, 0],
-                    }]
+                    labels: ["CPU (%)", "Memory (%)", "Disk (%)", "Bytes Sent (MB)", "Bytes Received (MB)", "Uptime (hrs)"],
+                    datasets: [
+                        { label: "Device 1", backgroundColor: "red", data: [0, 0, 0, 0, 0, 0] },
+                        { label: "Device 2", backgroundColor: "blue", data: [0, 0, 0, 0, 0, 0] },
+                        { label: "Device 3", backgroundColor: "green", data: [0, 0, 0, 0, 0, 0] }
+                    ]
                 }
             });
 
