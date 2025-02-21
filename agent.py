@@ -1,5 +1,9 @@
 import psutil
 import time
+import requests
+import json
+
+SERVER_URL = "http://yourserver.com/api/system_stats"
 
 def collect_system_stats():
     cpu_usage = psutil.cpu_percent(interval=1)
@@ -17,14 +21,25 @@ def collect_system_stats():
     boot_time = psutil.boot_time()
     uptime = time.time() - boot_time
 
-    # TODO: Replace print statements with statements to send data to server
+    data = {
+        "cpu_usage": cpu_usage,
+        "memory_usage": memory_usage,
+        "disk_usage": disk_usage,
+        "bytes_sent": bytes_sent,
+        "bytes_recv": bytes_recv,
+        "uptime": uptime
+    }
 
-    print(f"CPU Usage: {cpu_usage}%")
-    print(f"Memory Usage: {memory_usage}%")
-    print(f"Disk Usage: {disk_usage}%")
-    print(f"Network - Bytes Sent: {bytes_sent}, Bytes Received: {bytes_recv}")
-    print(f"System Uptime: {uptime:.2f} seconds")
+    try:
+        response = requests.post(SERVER_URL, json=data)
+        if response.status_code == 200:
+            print("Data sent successfully!")
+        else:
+            print(f"Failed to send data. Status code: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending data: {e}")
 
 while True:
     collect_system_stats()
     time.sleep(10)
+
