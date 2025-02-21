@@ -3,7 +3,8 @@ import time
 import requests
 import json
 
-SERVER_URL = "http://yourserver.com/api/system_stats"
+# Change this for each device (device1, device2, device3, etc.)
+SERVER_URL = "http://localhost:5000/update/device1"
 
 def collect_system_stats():
     cpu_usage = psutil.cpu_percent(interval=1)
@@ -21,10 +22,11 @@ def collect_system_stats():
     boot_time = psutil.boot_time()
     uptime = time.time() - boot_time
 
+    # Create the data payload to match what the server expects
     data = {
-        "cpu_usage": cpu_usage,
-        "memory_usage": memory_usage,
-        "disk_usage": disk_usage,
+        "cpu": cpu_usage,
+        "memory": memory_usage,
+        "disk": disk_usage,
         "bytes_sent": bytes_sent,
         "bytes_recv": bytes_recv,
         "uptime": uptime
@@ -42,4 +44,3 @@ def collect_system_stats():
 while True:
     collect_system_stats()
     time.sleep(10)
-
