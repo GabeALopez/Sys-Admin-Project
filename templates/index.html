@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>System Monitor Dashboard</h1>
-
+    
     <canvas id="sysChart"></canvas>
     <canvas id="netChart"></canvas>
     <canvas id="uptimeChart"></canvas>
@@ -24,43 +24,37 @@
                 return null;
             }
         }
-    
+
         async function updateCharts(sysChart, netChart, uptimeChart) {
             const data = await fetchData();
             if (!data) return;
-    
+
             let memoryWarningTriggered = false;
             let cpuWarningTriggered = false;
             let diskWarningTriggered = false;
-    
+
+            // Update system metrics chart
             sysChart.data.datasets.forEach((dataset, i) => {
-                const deviceKey = Object.keys(data)[i];
-                const deviceData = data[deviceKey];
-    
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
                 if (deviceData) {
-                    dataset.data = [deviceData.cpu, deviceData.memory, deviceData.disk];
-    
-                    // Check if memory usage exceeds 90%
-                    if (deviceData.memory > 90) {
-                        memoryWarningTriggered = true;
-                    }
+                    dataset.data = [
+                        deviceData.cpu, deviceData.memory, deviceData.disk,
+                    ];
 
-                    // Check if cpu usage exceeds 90%
-                    if (deviceData.cpu > 90) {
-                        cpuWarningTriggered = true;
-                    }
-
-                    // Check if disk usage exceeds 90%
-                    if (deviceData.disk > 90) {
-                        diskWarningTriggered = true;
-                    }
+                    // Check for warnings
+                    if (deviceData.memory > 90) memoryWarningTriggered = true;
+                    if (deviceData.cpu > 90) cpuWarningTriggered = true;
+                    if (deviceData.disk > 90) diskWarningTriggered = true;
                 }
             });
-    
+
+            // Update network traffic chart
             netChart.data.datasets.forEach((dataset, i) => {
-                const deviceKey = Object.keys(data)[i];
-                const deviceData = data[deviceKey];
-    
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
                 if (deviceData) {
                     dataset.data = [
                         deviceData.bytes_sent / 1e6,
@@ -68,37 +62,37 @@
                     ];
                 }
             });
-    
+
+            // Update uptime chart
             uptimeChart.data.datasets.forEach((dataset, i) => {
-                const deviceKey = Object.keys(data)[i];
-                const deviceData = data[deviceKey];
-    
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
                 if (deviceData) {
                     dataset.data = [deviceData.uptime / 3600];
                 }
             });
-    
+
             sysChart.update();
             netChart.update();
             uptimeChart.update();
-    
-            // Trigger alert popup if memory usage is above 50%
+
+            // Trigger alerts if thresholds are exceeded
             if (memoryWarningTriggered) {
                 alert("Warning: Memory usage is above 90% on one or more devices!");
             }
 
-            // Trigger alert popup if memory usage is above 90%
             if (cpuWarningTriggered) {
                 alert("Warning: CPU usage is above 90% on one or more devices!");
             }
 
-            // Trigger alert popup if memory usage is above 90%
             if (diskWarningTriggered) {
                 alert("Warning: Disk usage is above 90% on one or more devices!");
             }
         }
-    
+
         document.addEventListener("DOMContentLoaded", async function () {
+            // System metrics chart
             const sysCtx = document.getElementById("sysChart").getContext("2d");
             const sysChart = new Chart(sysCtx, {
                 type: "bar",
@@ -111,7 +105,8 @@
                     ]
                 }
             });
-    
+
+            // Network traffic chart
             const netCtx = document.getElementById("netChart").getContext("2d");
             const netChart = new Chart(netCtx, {
                 type: "bar",
@@ -124,7 +119,8 @@
                     ]
                 }
             });
-    
+
+            // Uptime chart
             const uptimeCtx = document.getElementById("uptimeChart").getContext("2d");
             const uptimeChart = new Chart(uptimeCtx, {
                 type: "bar",
@@ -137,8 +133,11 @@
                     ]
                 }
             });
-    
+
+            // Initial data update
             await updateCharts(sysChart, netChart, uptimeChart);
+
+            // Update charts every 5 seconds
             setInterval(() => updateCharts(sysChart, netChart, uptimeChart), 5000);
         });
     </script>
