@@ -1,4 +1,5 @@
 import socket
+import json
 
 def start_server():
     # Set up the server to listen for incoming connections
@@ -25,11 +26,21 @@ def start_server():
         if not data:
             print("Client has disconnected.")
             break
-        print(f"Received from client: {data.decode()}")
 
-        # Send a response back to the client
-        response = "Message received"
-        client_socket.send(response.encode())
+        # Deserialize the JSON data
+        try:
+            received_json = json.loads(data.decode())
+            print(f"Received from client: {received_json}")
+        except json.JSONDecodeError:
+            print("Error decoding JSON data from client.")
+            continue
+
+        # Prepare a response JSON to send back to the client
+        response = {"message": "Message received", "status": "success"}
+        response_json = json.dumps(response)
+
+        # Send the response back to the client
+        client_socket.send(response_json.encode())
 
     # Close the connection
     client_socket.close()

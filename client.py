@@ -1,4 +1,5 @@
 import socket
+import json
 
 def start_client():
     # Create a socket object to connect to the server
@@ -11,7 +12,7 @@ def start_client():
     client_socket.connect((host, port))
 
     while True:
-        # Input message from the user
+        # Prepare data to send as JSON
         message = input("Enter message to send to server (or 'exit' to quit): ")
 
         # If the message is 'exit', break the loop and disconnect
@@ -19,12 +20,23 @@ def start_client():
             print("Closing connection.")
             break
 
-        # Send the message to the server
-        client_socket.send(message.encode())
+        # Create a dictionary to send as JSON
+        data_to_send = {"user_message": message, "status": "sending"}
+        json_data = json.dumps(data_to_send)
+
+        # Send the message to the server as JSON
+        client_socket.send(json_data.encode())
 
         # Receive the server's response
         response = client_socket.recv(1024)
-        print(f"Received from server: {response.decode()}")
+        
+        # Deserialize the JSON response from the server
+        try:
+            received_response = json.loads(response.decode())
+            print(f"Received from server: {received_response}")
+        except json.JSONDecodeError:
+            print("Error decoding JSON response from server.")
+            continue
 
     # Close the socket
     client_socket.close()
