@@ -18,6 +18,7 @@ python -m venv .
 source ./bin/activate
 cd ..
 cd Sys-Admin-Project
+pip install -r requirements.txt
 ```
 
 **Windows:**
@@ -31,7 +32,7 @@ cmd
 .\\Scripts\\activate
 cd ..
 cd Sys-Admin-Project
-pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 ### Run locally
