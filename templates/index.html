@@ -10,49 +10,135 @@
     <h1>System Monitor Dashboard</h1>
     
     <canvas id="sysChart"></canvas>
+    <canvas id="netChart"></canvas>
+    <canvas id="uptimeChart"></canvas>
 
     <script>
         async function fetchData() {
-            const response = await fetch("/data");
-            return await response.json();
+            try {
+                const response = await fetch("/data");
+                if (!response.ok) throw new Error("Failed to fetch data");
+                return await response.json();
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                return null;
+            }
         }
 
-        async function updateChart(chart) {
+        async function updateCharts(sysChart, netChart, uptimeChart) {
             const data = await fetchData();
+            if (!data) return;
 
-            chart.data.datasets.forEach((dataset, i) => {
-                const deviceKeys = Object.keys(data.devices_data);
-                if (i < deviceKeys.length) {
-                    const deviceData = data.devices_data[deviceKeys[i]];
+            let memoryWarningTriggered = false;
+            let cpuWarningTriggered = false;
+            let diskWarningTriggered = false;
 
-                    if (deviceData && Object.keys(deviceData).length > 0) {
-                        dataset.data = [
-                            deviceData.cpu, deviceData.memory, 
-                            deviceData.disk, deviceData.bytes_sent / 1e6, 
-                            deviceData.bytes_recv / 1e6, deviceData.uptime / 3600
-                        ];
-                    }
+            // Update system metrics chart
+            sysChart.data.datasets.forEach((dataset, i) => {
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
+                if (deviceData) {
+                    dataset.data = [
+                        deviceData.cpu, deviceData.memory, deviceData.disk,
+                    ];
+
+                    // Check for warnings
+                    if (deviceData.memory > 90) memoryWarningTriggered = true;
+                    if (deviceData.cpu > 90) cpuWarningTriggered = true;
+                    if (deviceData.disk > 90) diskWarningTriggered = true;
                 }
             });
 
-            chart.update();
+            // Update network traffic chart
+            netChart.data.datasets.forEach((dataset, i) => {
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
+                if (deviceData) {
+                    dataset.data = [
+                        deviceData.bytes_sent / 1e6,
+                        deviceData.bytes_recv / 1e6
+                    ];
+                }
+            });
+
+            // Update uptime chart
+            uptimeChart.data.datasets.forEach((dataset, i) => {
+                const deviceKey = Object.keys(data.devices_data)[i];
+                const deviceData = data.devices_data[deviceKey];
+
+                if (deviceData) {
+                    dataset.data = [deviceData.uptime / 3600];
+                }
+            });
+
+            sysChart.update();
+            netChart.update();
+            uptimeChart.update();
+
+            // Trigger alerts if thresholds are exceeded
+            if (memoryWarningTriggered) {
+                alert("Warning: Memory usage is above 90% on one or more devices!");
+            }
+
+            if (cpuWarningTriggered) {
+                alert("Warning: CPU usage is above 90% on one or more devices!");
+            }
+
+            if (diskWarningTriggered) {
+                alert("Warning: Disk usage is above 90% on one or more devices!");
+            }
         }
 
-        document.addEventListener("DOMContentLoaded", async function() {
-            const ctx = document.getElementById("sysChart").getContext("2d");
-            const chart = new Chart(ctx, {
+        document.addEventListener("DOMContentLoaded", async function () {
+            // System metrics chart
+            const sysCtx = document.getElementById("sysChart").getContext("2d");
+            const sysChart = new Chart(sysCtx, {
                 type: "bar",
                 data: {
-                    labels: ["CPU (%)", "Memory (%)", "Disk (%)", "Bytes Sent (MB)", "Bytes Received (MB)", "Uptime (hrs)"],
+                    labels: ["CPU (%)", "Memory (%)", "Disk (%)"],
                     datasets: [
-                        { label: "Device 1", backgroundColor: "red", data: [0, 0, 0, 0, 0, 0] },
-                        { label: "Device 2", backgroundColor: "blue", data: [0, 0, 0, 0, 0, 0] },
-                        { label: "Device 3", backgroundColor: "green", data: [0, 0, 0, 0, 0, 0] }
+                        { label: "Device 1", backgroundColor: "red", data: [0, 0, 0] },
+                        { label: "Device 2", backgroundColor: "blue", data: [0, 0, 0] },
+                        { label: "Device 3", backgroundColor: "green", data: [0, 0, 0] }
                     ]
                 }
             });
 
-            setInterval(() => updateChart(chart), 5000);
+            // Network traffic chart
+            const netCtx = document.getElementById("netChart").getContext("2d");
+            const netChart = new Chart(netCtx, {
+                type: "bar",
+                data: {
+                    labels: ["Bytes Sent (MB)", "Bytes Received (MB)"],
+                    datasets: [
+                        { label: "Device 1", backgroundColor: "red", data: [0, 0] },
+                        { label: "Device 2", backgroundColor: "blue", data: [0, 0] },
+                        { label: "Device 3", backgroundColor: "green", data: [0, 0] }
+                    ]
+                }
+            });
+
+            // Uptime chart
+            const uptimeCtx = document.getElementById("uptimeChart").getContext("2d");
+            const uptimeChart = new Chart(uptimeCtx, {
+                type: "bar",
+                data: {
+                    labels: ["Uptime (hrs)"],
+                    datasets: [
+                        { label: "Device 1", backgroundColor: "red", data: [0] },
+                        { label: "Device 2", backgroundColor: "blue", data: [0] },
+                        { label: "Device 3", backgroundColor: "green", data: [0] }
+                    ]
+                }
+            });
+
+            // Initial data update
+            await updateCharts(sysChart, netChart, uptimeChart);
+
+            // Update charts every 5 seconds
+            setInterval(() => updateCharts(sysChart, netChart, uptimeChart), 5000);
         });
     </script>
 </body>
