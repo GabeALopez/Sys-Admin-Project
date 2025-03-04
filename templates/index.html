@@ -8,6 +8,15 @@
 </head>
 <body>
     <h1>System Monitor Dashboard</h1>
+
+    <label for="cpuThreshold">CPU Warning Threshold (%):</label>
+    <input type="number" id="cpuThreshold" value="90" min="0" max="100">
+
+    <label for="memoryThreshold">Memory Warning Threshold (%):</label>
+    <input type="number" id="memoryThreshold" value="90" min="0" max="100">
+    
+    <label for="diskThreshold">Disk Warning Threshold (%):</label>
+    <input type="number" id="diskThreshold" value="90" min="0" max="100">
     
     <canvas id="sysChart"></canvas>
     <canvas id="netChart"></canvas>
@@ -33,7 +42,10 @@
             let cpuWarningTriggered = false;
             let diskWarningTriggered = false;
 
-            // Update system metrics chart
+            const memoryThreshold = parseInt(document.getElementById("memoryThreshold").value);
+            const cpuThreshold = parseInt(document.getElementById("cpuThreshold").value);
+            const diskThreshold = parseInt(document.getElementById("diskThreshold").value);
+
             sysChart.data.datasets.forEach((dataset, i) => {
                 const deviceKey = Object.keys(data.devices_data)[i];
                 const deviceData = data.devices_data[deviceKey];
@@ -43,14 +55,12 @@
                         deviceData.cpu, deviceData.memory, deviceData.disk,
                     ];
 
-                    // Check for warnings
-                    if (deviceData.memory > 90) memoryWarningTriggered = true;
-                    if (deviceData.cpu > 90) cpuWarningTriggered = true;
-                    if (deviceData.disk > 90) diskWarningTriggered = true;
+                    if (deviceData.memory > memoryThreshold) memoryWarningTriggered = true;
+                    if (deviceData.cpu > cpuThreshold) cpuWarningTriggered = true;
+                    if (deviceData.disk > diskThreshold) diskWarningTriggered = true;
                 }
             });
 
-            // Update network traffic chart
             netChart.data.datasets.forEach((dataset, i) => {
                 const deviceKey = Object.keys(data.devices_data)[i];
                 const deviceData = data.devices_data[deviceKey];
@@ -63,7 +73,6 @@
                 }
             });
 
-            // Update uptime chart
             uptimeChart.data.datasets.forEach((dataset, i) => {
                 const deviceKey = Object.keys(data.devices_data)[i];
                 const deviceData = data.devices_data[deviceKey];
@@ -77,22 +86,18 @@
             netChart.update();
             uptimeChart.update();
 
-            // Trigger alerts if thresholds are exceeded
             if (memoryWarningTriggered) {
-                alert("Warning: Memory usage is above 90% on one or more devices!");
+                alert(`Warning: Memory usage is above ${memoryThreshold}% on one or more devices!`);
             }
-
             if (cpuWarningTriggered) {
-                alert("Warning: CPU usage is above 90% on one or more devices!");
+                alert(`Warning: CPU usage is above ${cpuThreshold}% on one or more devices!`);
             }
-
             if (diskWarningTriggered) {
-                alert("Warning: Disk usage is above 90% on one or more devices!");
+                alert(`Warning: Disk usage is above ${diskThreshold}% on one or more devices!`);
             }
         }
 
         document.addEventListener("DOMContentLoaded", async function () {
-            // System metrics chart
             const sysCtx = document.getElementById("sysChart").getContext("2d");
             const sysChart = new Chart(sysCtx, {
                 type: "bar",
@@ -106,7 +111,6 @@
                 }
             });
 
-            // Network traffic chart
             const netCtx = document.getElementById("netChart").getContext("2d");
             const netChart = new Chart(netCtx, {
                 type: "bar",
@@ -120,7 +124,6 @@
                 }
             });
 
-            // Uptime chart
             const uptimeCtx = document.getElementById("uptimeChart").getContext("2d");
             const uptimeChart = new Chart(uptimeCtx, {
                 type: "bar",
@@ -134,10 +137,7 @@
                 }
             });
 
-            // Initial data update
             await updateCharts(sysChart, netChart, uptimeChart);
-
-            // Update charts every 5 seconds
             setInterval(() => updateCharts(sysChart, netChart, uptimeChart), 5000);
         });
     </script>
