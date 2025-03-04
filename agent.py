@@ -2,6 +2,7 @@ import psutil
 import time
 import requests
 import json
+from datetime import datetime
 
 # Change this for each device (device1, device2, device3, etc.)
 SERVER_URL = "http://localhost:5000/update/device1"
@@ -22,6 +23,9 @@ def collect_system_stats():
     boot_time = psutil.boot_time()
     uptime = time.time() - boot_time
 
+    # Get the current timestamp
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")  # Timestamp to the second
+
     # Create the data payload to match what the server expects
     data = {
         "cpu": cpu_usage,
@@ -29,7 +33,8 @@ def collect_system_stats():
         "disk": disk_usage,
         "bytes_sent": bytes_sent,
         "bytes_recv": bytes_recv,
-        "uptime": uptime
+        "uptime": uptime,
+        "timestamp": timestamp  # Add the timestamp to the data
     }
 
     try:
