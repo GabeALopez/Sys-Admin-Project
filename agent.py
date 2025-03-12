@@ -10,7 +10,7 @@ from datetime import datetime
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 
 # Configurable variables
-SERVER_URL = os.getenv("SERVER_URL", "http://127.0.0.1:5000/update/device2")
+SERVER_URL = os.getenv("SERVER_URL", "http://localhost:5000/update/device2")
 SLEEP_INTERVAL = int(os.getenv("SLEEP_INTERVAL", 10))  # Default to 10 seconds
 
 def collect_system_stats():
