@@ -1,0 +1,213 @@
+commit ca2bcf9b2c0b17c07ca334d9f2d2ab0ade43148f
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Mar 11 22:21:23 2025 -0400
+
+    Changed index.html to display past data and fixed graphs
+
+commit d6512031d9a4bc1992dc8bfdc1f8f816f3bea2bc
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Fri Mar 7 15:42:17 2025 -0500
+
+    Removed initial testing server and client py files
+
+commit 1a000349560edc32ab5733feec4c6148df19cd08
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Fri Mar 7 15:41:45 2025 -0500
+
+    Removed testing index.html files
+
+commit ef8820c9994cdf9617147a1ca27c30900ea26e35
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Fri Mar 7 15:41:01 2025 -0500
+
+    Fixed issue where front end was not updating bar graphs from log file
+
+commit e34babae8069dcb97e81714aba8df2e164c9dea8
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Tue Mar 4 17:21:31 2025 -0500
+
+    FINALLY made the alerts values adjustable
+
+commit 012281a3949a68f7f41d776262c38de6a6d6baf6
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Tue Mar 4 17:02:05 2025 -0500
+
+    Fixing bad commit
+
+commit b105de3859a8d204e4b0d76bb63fc0ded2db751b
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Tue Mar 4 16:53:27 2025 -0500
+
+    Removed bad changes
+
+commit a58211d40281742dc5f3aa4a27b04f0efad36e4c
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Tue Mar 4 16:33:22 2025 -0500
+
+    Added adjustable boxes for alerts
+
+commit a480e924675685ae56497bea3e427f1d224a3e10
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Mar 4 15:54:16 2025 -0500
+
+    Merged previous code and current code for index.html
+
+commit 2fece4907a07bf22bf39d3e3de9e1bd64b12fb2b
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Mar 4 15:29:47 2025 -0500
+
+    Changed front end to access the same endpint but with new format for data
+
+commit d65eb6d7d342bdb4be4e9359079c7595011469fa
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Mar 4 15:29:06 2025 -0500
+
+    Changed backend to create a log file and named file to exchange and save data for the server
+
+commit 3768032cdd94d63c3cbc0ff29ffbcd143fbda1de
+Merge: 8df418e 51e4f35
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Tue Mar 4 15:09:06 2025 -0500
+
+    Merge branch 'main' of https://github.com/GabeALopez/Sys-Admin-Project
+
+commit 51e4f35e24288683b0ed4ae431bc8a7d56aa83ff
+Author: derek0644 <117666667+derek0644@users.noreply.github.com>
+Date:   Mon Mar 3 22:23:36 2025 -0500
+
+    client.py and server.py now support continuous connection for exchanging JSON files
+
+commit f415983bd18b23cfaf30c7333e479be27fc40ee9
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Mon Mar 3 22:19:29 2025 -0500
+
+    Changed agent to send timestamp to the server
+
+commit cb1c7cbdd8309867734632134e09bcf5374c919e
+Merge: b2d3129 ec9a84d
+Author: derek0644 <117666667+derek0644@users.noreply.github.com>
+Date:   Mon Mar 3 22:09:45 2025 -0500
+
+    Merge branch 'main' of https://github.com/GabeALopez/Sys-Admin-Project
+
+commit b2d312922846b8e9ddba11436e31d7a7a97ecd21
+Author: derek0644 <117666667+derek0644@users.noreply.github.com>
+Date:   Mon Mar 3 22:09:29 2025 -0500
+
+    client.py and server.py now support continuous message exchange
+
+commit ec9a84db1a9f40d0555d4b7fbaa82bd4cc5c921c
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Mon Mar 3 21:58:01 2025 -0500
+
+    Added line to install dependencies for linux in README file
+
+commit f6a518836f056ea255f0fcb3f52f833fe1fa802c
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Mon Mar 3 21:55:58 2025 -0500
+
+    Fixed command to install dependencies with requirements.txt in README file
+
+commit bf73de030b81b56defc205d97c8c532a6df5bbee
+Author: derek0644 <117666667+derek0644@users.noreply.github.com>
+Date:   Mon Mar 3 21:53:43 2025 -0500
+
+    Added client.py and server.py scripts for bidirectional data transfer
+
+commit 8df418e1ede15cd945f220d205b4a78aec6dc418
+Author: Jacob Zukas <zukasj0@gmail.com>
+Date:   Mon Mar 3 16:18:25 2025 -0500
+
+    Updated GUI
+    
+    Separated values for uptime, system monitoring, and network monitoring. Added alerts for the usage, will make them adjustable at a later point.
+
+commit 240038ca8490802c26a87dd7345c1c634790f378
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Sun Feb 23 17:08:42 2025 -0500
+
+    Removed hashtag in README
+
+commit dc4f63d9ff05b786fd9d791714a5e3d34aa8f8e3
+Author: derek0644 <117666667+derek0644@users.noreply.github.com>
+Date:   Sun Feb 23 16:42:30 2025 -0500
+
+    #
+
+commit 36f9fb70fb829ea1634659295b284830c447e845
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Sun Feb 23 16:41:10 2025 -0500
+
+    Updated README with instructions on how to run scripts
+
+commit 4848d565518421b4a03ea07ad8a6d49cb2085c52
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Sun Feb 23 16:23:27 2025 -0500
+
+    Created requirements.txt
+
+commit 22c929a3b1caf6a93878e68dc62f4d849e706690
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Thu Feb 20 20:12:12 2025 -0500
+
+    Fixed agent.py to send data to localhost right now.
+
+commit ab885eaf51f2807eee871fcb229bf0347b510c47
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Thu Feb 20 20:03:15 2025 -0500
+
+    Updated app to take sys info from three devices
+
+commit 8efda21fbff42ddfdaff08373a4a2bc1d7943e91
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Thu Feb 20 19:53:59 2025 -0500
+
+    Updated index.html to how info for three devices.
+
+commit 0731a3bfe164d15c4f4c39a101b415a440d296f6
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Thu Feb 20 19:47:40 2025 -0500
+
+    Changed agent.py to send data to a server. No server is specified yet.
+
+commit f4ba050c3fe0a2979c2c82c808ab4fb8092c5deb
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Wed Feb 19 12:09:32 2025 -0500
+
+    Spelling error in TODO
+
+commit 545e117b44a824606925cd97a438b0eca03a4878
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Wed Feb 19 11:47:53 2025 -0500
+
+    Started the flask app backend and started html front end
+
+commit 3f7d7fc5cd44e9d1d4be8e61317d8b61cddd61d1
+Author: GabeALopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Wed Feb 19 11:47:04 2025 -0500
+
+    Changed title of README
+
+commit a07f80743cd05c2e352a8cc0415d75e1d8ffef9e
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Feb 18 20:39:14 2025 -0500
+
+    Corrected spelling error in README
+
+commit b4caaff3ad206b895262d4b4726ba0f710347d0d
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Feb 18 20:38:37 2025 -0500
+
+    Added description to repo
+
+commit ef1a2d49eec721d2afbe7197dd8acad8966201b9
+Author: Gabriel Lopez <gabriel.andres.lopez03@gmail.com>
+Date:   Tue Feb 18 20:36:14 2025 -0500
+
+    Created agent.py. Collected Sysetm data (i.e. Network statistics, cpu, memory, etc.)
+
+commit f2c526293ee0c233694c2b98dd9f4ce014ca48eb
+Author: Gabriel Lopez <109094200+GabeALopez@users.noreply.github.com>
+Date:   Tue Feb 18 20:07:09 2025 -0500
+
+    Created README.md
